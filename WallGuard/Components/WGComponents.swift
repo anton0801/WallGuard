@@ -182,30 +182,96 @@ struct DetailRow: View {
 
 // MARK: - ImagePickerView
 import PhotosUI
+import AVFoundation
 
 struct ImagePickerView: UIViewControllerRepresentable {
     @Binding var imageData: Data?
     @Environment(\.presentationMode) var dismiss
 
+    @State private var showSettingsAlert = false
+
     func makeCoordinator() -> Coordinator { Coordinator(self) }
 
-    func makeUIViewController(context: Context) -> UIImagePickerController {
-        let picker = UIImagePickerController()
-        picker.delegate = context.coordinator
-        picker.sourceType = UIImagePickerController.isSourceTypeAvailable(.camera) ? .camera : .photoLibrary
-        return picker
+    func makeUIViewController(context: Context) -> UIViewController {
+        let container = UIViewController()
+
+        let authStatus = AVCaptureDevice.authorizationStatus(for: .video)
+
+        switch authStatus {
+        case .authorized:
+            presentPicker(on: container, useCamera: true, context: context)
+
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                DispatchQueue.main.async {
+                    if granted {
+                        presentPicker(on: container, useCamera: true, context: context)
+                    } else {
+                        presentPicker(on: container, useCamera: false, context: context)
+                    }
+                }
+            }
+
+        case .denied, .restricted:
+            DispatchQueue.main.async {
+                let alert = UIAlertController(
+                    title: "Camera Access Required",
+                    message: "Wall Guard needs camera access to photograph wall defects. Please enable it in Settings.",
+                    preferredStyle: .alert
+                )
+                alert.addAction(UIAlertAction(title: "Open Settings", style: .default) { _ in
+                    if let url = URL(string: UIApplication.openSettingsURLString) {
+                        UIApplication.shared.open(url)
+                    }
+                    dismiss.wrappedValue.dismiss()
+                })
+                alert.addAction(UIAlertAction(title: "Use Photo Library", style: .default) { _ in
+                    presentPicker(on: container, useCamera: false, context: context)
+                })
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in
+                    dismiss.wrappedValue.dismiss()
+                })
+                container.present(alert, animated: true)
+            }
+
+        @unknown default:
+            presentPicker(on: container, useCamera: false, context: context)
+        }
+
+        return container
     }
 
-    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
+    private func presentPicker(on container: UIViewController,
+                                useCamera: Bool,
+                                context: Context) {
+        let picker = UIImagePickerController()
+        picker.delegate = context.coordinator
 
+        let cameraAvailable = UIImagePickerController.isSourceTypeAvailable(.camera)
+        picker.sourceType = (useCamera && cameraAvailable) ? .camera : .photoLibrary
+        picker.allowsEditing = false
+        picker.modalPresentationStyle = .fullScreen
+
+        // Small delay to ensure the container view is in the hierarchy
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+            container.present(picker, animated: true)
+        }
+    }
+
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
+
+    // MARK: - Coordinator
     class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
         let parent: ImagePickerView
+
         init(_ parent: ImagePickerView) { self.parent = parent }
 
-        func imagePickerController(_ picker: UIImagePickerController,
-                                   didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-            if let img = info[.originalImage] as? UIImage {
-                parent.imageData = img.jpegData(compressionQuality: 0.7)
+        func imagePickerController(
+            _ picker: UIImagePickerController,
+            didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
+        ) {
+            if let img = info[.editedImage] as? UIImage ?? info[.originalImage] as? UIImage {
+                parent.imageData = img.jpegData(compressionQuality: 0.75)
             }
             parent.dismiss.wrappedValue.dismiss()
         }
