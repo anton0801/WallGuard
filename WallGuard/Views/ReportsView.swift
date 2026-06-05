@@ -51,30 +51,29 @@ struct ReportsView: View {
                         // Export buttons
                         HStack(spacing: 12) {
                             Button {
-                                exported = true
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { exported = false }
+                                withAnimation { exported = true }
+                                let reportText = buildReportText()
+                                presentShareSheet(items: [reportText])
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                                    withAnimation { exported = false }
+                                }
                             } label: {
                                 HStack {
-                                    Image(systemName: exported ? "checkmark.circle.fill" : "doc.fill")
+                                    Image(systemName: exported
+                                          ? "checkmark.circle.fill"
+                                          : "doc.fill")
                                     Text(exported ? "Exported!" : "Export PDF")
                                         .font(.system(size: 15, weight: .semibold))
                                 }
-                                .foregroundColor(WGColor.bg).frame(maxWidth: .infinity).frame(height: 50)
-                                .background(exported ? WGColor.success : WGColor.yellow).cornerRadius(14)
+                                .foregroundColor(WGColor.bg)
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 50)
+                                .background(exported ? WGColor.success : WGColor.yellow)
+                                .cornerRadius(14)
+                                .animation(.spring(response: 0.3, dampingFraction: 0.7), value: exported)
                             }
-                            Button {
-                                let text = buildReportText()
-                                let av = UIActivityViewController(activityItems: [text], applicationActivities: nil)
-                                UIApplication.shared.windows.first?.rootViewController?.present(av, animated: true)
-                            } label: {
-                                HStack {
-                                    Image(systemName: "square.and.arrow.up")
-                                    Text("Share").font(.system(size: 15, weight: .semibold))
-                                }
-                                .foregroundColor(WGColor.textPrimary).frame(maxWidth: .infinity).frame(height: 50)
-                                .background(WGColor.card).cornerRadius(14)
-                                .overlay(RoundedRectangle(cornerRadius: 14).stroke(WGColor.divider, lineWidth: 1))
-                            }
+
+                            ShareButton()
                         }
 
                         Spacer().frame(height: 90)
@@ -205,5 +204,52 @@ struct CategoryChart: View {
                 }
             }
         }
+    }
+}
+
+struct ShareButton: View {
+    @EnvironmentObject var appState: AppState
+    @State private var anchor: CGRect = .zero
+
+    var body: some View {
+        Button {
+            let text = buildText()
+            // Use GeometryReader-captured frame as popover anchor
+            let sourceView = findKeyWindow()
+            presentShareSheet(items: [text], sourceView: sourceView)
+        } label: {
+            HStack {
+                Image(systemName: "square.and.arrow.up")
+                Text("Share")
+                    .font(.system(size: 15, weight: .semibold))
+            }
+            .foregroundColor(WGColor.textPrimary)
+            .frame(maxWidth: .infinity)
+            .frame(height: 50)
+            .background(WGColor.card)
+            .cornerRadius(14)
+            .overlay(
+                RoundedRectangle(cornerRadius: 14)
+                    .stroke(WGColor.divider, lineWidth: 1)
+            )
+        }
+    }
+
+    private func buildText() -> String {
+        var lines = ["=== Wall Guard Report ===",
+                     "Generated: \(Date().formatted())", ""]
+        lines += ["Projects: \(appState.projects.count)",
+                  "Rooms: \(appState.rooms.count)",
+                  "Defects: \(appState.defects.count)",
+                  "Open tasks: \(appState.tasks.filter { !$0.isDone }.count)"]
+        return lines.joined(separator: "\n")
+    }
+
+    private func findKeyWindow() -> UIView? {
+        UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .first(where: { $0.activationState == .foregroundActive })?
+            .windows
+            .first(where: { $0.isKeyWindow })
     }
 }

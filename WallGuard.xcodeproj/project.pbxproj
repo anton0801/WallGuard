@@ -271,7 +271,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WallGuard/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Wall Guard";
-				INFOPLIST_KEY_NSCameraUsageDescription = "Wall Guard needs this permission.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Wall Guard uses the camera to scan. For example, when you log a new defect, you can take a photo of the damaged area to attach it to the record for future comparison.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Wall Guard needs photo library access for wall photos";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -313,7 +313,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WallGuard/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Wall Guard";
-				INFOPLIST_KEY_NSCameraUsageDescription = "Wall Guard needs this permission.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Wall Guard uses the camera to scan. For example, when you log a new defect, you can take a photo of the damaged area to attach it to the record for future comparison.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Wall Guard needs photo library access for wall photos";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;

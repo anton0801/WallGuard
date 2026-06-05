@@ -281,3 +281,63 @@ struct ImagePickerView: UIViewControllerRepresentable {
         }
     }
 }
+
+// MARK: - Share Helper
+func presentShareSheet(items: [Any], sourceView: UIView? = nil) {
+    let av = UIActivityViewController(
+        activityItems: items,
+        applicationActivities: nil
+    )
+
+    // Required on iPad — without sourceView it crashes
+    if let popover = av.popoverPresentationController {
+        if let sourceView = sourceView {
+            popover.sourceView = sourceView
+            popover.sourceRect = CGRect(
+                x: sourceView.bounds.midX,
+                y: sourceView.bounds.midY,
+                width: 0, height: 0
+            )
+        } else {
+            // Fallback: anchor to the center of the key window
+            if let windowScene = UIApplication.shared.connectedScenes
+                .compactMap({ $0 as? UIWindowScene })
+                .first(where: { $0.activationState == .foregroundActive }),
+               let window = windowScene.windows.first(where: { $0.isKeyWindow }) {
+                popover.sourceView = window
+                popover.sourceRect = CGRect(
+                    x: window.bounds.midX,
+                    y: window.bounds.midY,
+                    width: 0, height: 0
+                )
+            }
+        }
+        popover.permittedArrowDirections = []
+    }
+
+    // Safe rootViewController lookup — works on iOS 14+
+    let presenter = UIApplication.shared.connectedScenes
+        .compactMap { $0 as? UIWindowScene }
+        .first(where: { $0.activationState == .foregroundActive })?
+        .windows
+        .first(where: { $0.isKeyWindow })?
+        .rootViewController?
+        .topmostViewController()
+
+    presenter?.present(av, animated: true)
+}
+
+extension UIViewController {
+    func topmostViewController() -> UIViewController {
+        if let presented = presentedViewController {
+            return presented.topmostViewController()
+        }
+        if let nav = self as? UINavigationController {
+            return nav.visibleViewController?.topmostViewController() ?? self
+        }
+        if let tab = self as? UITabBarController {
+            return tab.selectedViewController?.topmostViewController() ?? self
+        }
+        return self
+    }
+}
