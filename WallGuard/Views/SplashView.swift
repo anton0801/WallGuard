@@ -94,32 +94,9 @@ struct SplashView: View {
                             .frame(width: 100, height: 100)
                             .shadow(color: WGColor.yellowGlowFill, radius: 20)
 
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 6)
-                                .stroke(WGColor.yellow, lineWidth: 2)
-                                .frame(width: 54, height: 44)
-
-                            ForEach(0..<4) { i in
-                                Rectangle()
-                                    .fill(WGColor.yellow.opacity(0.3 + Double(i) * 0.05))
-                                    .frame(width: 40, height: 1)
-                                    .offset(y: CGFloat(i - 1) * 9)
-                            }
-
-                            Canvas { ctx, size in
-                                var p = Path()
-                                p.move(to: CGPoint(x: size.width * 0.55, y: size.height * 0.25))
-                                p.addLine(to: CGPoint(x: size.width * 0.6,  y: size.height * 0.55))
-                                p.addLine(to: CGPoint(x: size.width * 0.52, y: size.height * 0.75))
-                                ctx.stroke(p, with: .color(WGColor.orange), lineWidth: 1.5)
-                            }
-                            .frame(width: 54, height: 44)
-
-                            Image(systemName: "magnifyingglass")
-                                .font(.system(size: 12, weight: .bold))
-                                .foregroundColor(WGColor.yellow)
-                                .offset(x: 22, y: -16)
-                        }
+                        Image(systemName: "hammer")
+                            .font(.system(size: 32, weight: .bold))
+                            .foregroundColor(WGColor.yellow)
                     }
                     .scaleEffect(logoScale)
                     .opacity(logoOpacity)

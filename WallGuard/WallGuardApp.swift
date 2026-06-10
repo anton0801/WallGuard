@@ -35,8 +35,16 @@ struct RootView: View {
                 EmptyView()
             }
         }
+        .environmentObject(appState)
         .preferredColorScheme(colorScheme)
-        .onAppear { appState.loadAll() }
+        .onAppear {
+            if hasCompletedOnboarding {
+                phase = .main
+            } else {
+                phase = .onboarding
+            }
+            appState.loadAll()
+        }
     }
     
     private var colorScheme: ColorScheme? {
