@@ -1,161 +1,186 @@
 import SwiftUI
+import Combine
+import Network
 
 struct SplashView: View {
-    var onFinish: () -> Void
-
     @State private var isVisible       = false
+    @StateObject private var marshal = WallGuardMarshal()
     @State private var bgOpacity:      Double   = 0
     @State private var bgScale:        CGFloat  = 1.1
     @State private var scanLineOpacity: Double  = 0
     @State private var crackLength1:   CGFloat  = 0
     @State private var crackLength2:   CGFloat  = 0
     @State private var crackLength3:   CGFloat  = 0
+    @State private var networkMonitor = NWPathMonitor()
     @State private var logoScale:      CGFloat  = 0.4
     @State private var logoOpacity:    Double   = 0
     @State private var titleOffset:    CGFloat  = 30
     @State private var subtitleOpacity: Double  = 0
     @State private var exitScale:      CGFloat  = 1.0
     @State private var exitOpacity:    Double   = 1.0
+    @State private var cancellables = Set<AnyCancellable>()
     @State private var scanY:          CGFloat  = -400
     @State private var radarPulse:     CGFloat  = 0.6
     @State private var gridOpacity:    Double   = 0.12
 
     var body: some View {
-        ZStack {
-            // Layer 1: Background gradient
-            LinearGradient(
-                colors: [WGColor.bgDeep, WGColor.bg, WGColor.bgSoft],
-                startPoint: .topLeading, endPoint: .bottomTrailing
-            )
-            .ignoresSafeArea()
-            .opacity(bgOpacity)
-            .scaleEffect(bgScale)
-
-            // Layer 2: Wall grid texture
-            WallGridLayer()
-                .opacity(gridOpacity)
+        NavigationView {
+            ZStack {
+                // Layer 1: Background gradient
+                LinearGradient(
+                    colors: [WGColor.bgDeep, WGColor.bg, WGColor.bgSoft],
+                    startPoint: .topLeading, endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea()
+                .opacity(bgOpacity)
+                .scaleEffect(bgScale)
+                
+                GeometryReader { geometry in
+                    Image("wall2")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: geometry.size.width, height: geometry.size.height)
+                        .ignoresSafeArea()
+                        .opacity(0.5)
+                        .blur(radius: 2)
+                }
                 .ignoresSafeArea()
 
-            // Layer 3: Crack animations
-            Canvas { ctx, size in
-                var p1 = Path()
-                p1.move(to: CGPoint(x: size.width * 0.25, y: size.height * 0.3))
-                p1.addLine(to: CGPoint(x: size.width * 0.25 + 40 * crackLength1, y: size.height * 0.3 + 60 * crackLength1))
-                p1.addLine(to: CGPoint(x: size.width * 0.25 + 60 * crackLength1, y: size.height * 0.3 + 100 * crackLength1))
-                ctx.stroke(p1, with: .color(WGColor.yellow.opacity(0.5)), lineWidth: 1.5)
-
-                var p2 = Path()
-                p2.move(to: CGPoint(x: size.width * 0.7, y: size.height * 0.4))
-                p2.addLine(to: CGPoint(x: size.width * 0.7 + 30 * crackLength2, y: size.height * 0.4 + 80 * crackLength2))
-                ctx.stroke(p2, with: .color(WGColor.orange.opacity(0.4)), lineWidth: 1.2)
-
-                var p3 = Path()
-                p3.move(to: CGPoint(x: size.width * 0.45, y: size.height * 0.6))
-                p3.addLine(to: CGPoint(x: size.width * 0.45 - 50 * crackLength3, y: size.height * 0.6 + 70 * crackLength3))
-                ctx.stroke(p3, with: .color(WGColor.yellow.opacity(0.35)), lineWidth: 1.0)
-            }
-            .opacity(scanLineOpacity)
-
-            // Layer 4: Scan beam
-            if isVisible {
-                Rectangle()
-                    .fill(LinearGradient(
-                        colors: [.clear, WGColor.yellow.opacity(0.15), WGColor.yellow.opacity(0.3),
-                                 WGColor.yellow.opacity(0.15), .clear],
-                        startPoint: .top, endPoint: .bottom
-                    ))
-                    .frame(height: 80)
-                    .offset(y: scanY)
+                // Layer 2: Wall grid texture
+                WallGridLayer()
+                    .opacity(gridOpacity)
                     .ignoresSafeArea()
-            }
+                
+                NavigationLink(
+                    destination: WallGuardShowpiece().navigationBarHidden(true),
+                    isActive: $marshal.navigateToWeb
+                ) { EmptyView() }
 
-            // Layer 5: Radar pulses
-            ForEach(0..<3) { i in
-                Circle()
-                    .stroke(WGColor.yellow.opacity(0.08 + Double(i) * 0.04), lineWidth: 1)
-                    .frame(width: 120 + CGFloat(i) * 80)
-                    .scaleEffect(radarPulse + CGFloat(i) * 0.15)
-                    .opacity(Double(3 - i) * 0.12)
-            }
+                // Layer 4: Scan beam
+                if isVisible {
+                    Rectangle()
+                        .fill(LinearGradient(
+                            colors: [.clear, WGColor.yellow.opacity(0.15), WGColor.yellow.opacity(0.3),
+                                     WGColor.yellow.opacity(0.15), .clear],
+                            startPoint: .top, endPoint: .bottom
+                        ))
+                        .frame(height: 80)
+                        .offset(y: scanY)
+                        .ignoresSafeArea()
+                }
 
-            // Layer 6: Logo + Title
-            VStack(spacing: 0) {
-                Spacer()
-
-                // App icon
-                ZStack {
+                // Layer 5: Radar pulses
+                ForEach(0..<3) { i in
                     Circle()
-                        .fill(WGColor.card)
-                        .frame(width: 100, height: 100)
-                        .shadow(color: WGColor.yellowGlowFill, radius: 20)
+                        .stroke(WGColor.yellow.opacity(0.08 + Double(i) * 0.04), lineWidth: 1)
+                        .frame(width: 120 + CGFloat(i) * 80)
+                        .scaleEffect(radarPulse + CGFloat(i) * 0.15)
+                        .opacity(Double(3 - i) * 0.12)
+                }
+                
+                NavigationLink(
+                    destination: RootView().navigationBarBackButtonHidden(true),
+                    isActive: $marshal.navigateToMain
+                ) { EmptyView() }
 
+                // Layer 6: Logo + Title
+                VStack(spacing: 0) {
+                    Spacer()
+
+                    // App icon
                     ZStack {
-                        RoundedRectangle(cornerRadius: 6)
-                            .stroke(WGColor.yellow, lineWidth: 2)
+                        Circle()
+                            .fill(WGColor.card)
+                            .frame(width: 100, height: 100)
+                            .shadow(color: WGColor.yellowGlowFill, radius: 20)
+
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 6)
+                                .stroke(WGColor.yellow, lineWidth: 2)
+                                .frame(width: 54, height: 44)
+
+                            ForEach(0..<4) { i in
+                                Rectangle()
+                                    .fill(WGColor.yellow.opacity(0.3 + Double(i) * 0.05))
+                                    .frame(width: 40, height: 1)
+                                    .offset(y: CGFloat(i - 1) * 9)
+                            }
+
+                            Canvas { ctx, size in
+                                var p = Path()
+                                p.move(to: CGPoint(x: size.width * 0.55, y: size.height * 0.25))
+                                p.addLine(to: CGPoint(x: size.width * 0.6,  y: size.height * 0.55))
+                                p.addLine(to: CGPoint(x: size.width * 0.52, y: size.height * 0.75))
+                                ctx.stroke(p, with: .color(WGColor.orange), lineWidth: 1.5)
+                            }
                             .frame(width: 54, height: 44)
 
-                        ForEach(0..<4) { i in
-                            Rectangle()
-                                .fill(WGColor.yellow.opacity(0.3 + Double(i) * 0.05))
-                                .frame(width: 40, height: 1)
-                                .offset(y: CGFloat(i - 1) * 9)
+                            Image(systemName: "magnifyingglass")
+                                .font(.system(size: 12, weight: .bold))
+                                .foregroundColor(WGColor.yellow)
+                                .offset(x: 22, y: -16)
                         }
-
-                        Canvas { ctx, size in
-                            var p = Path()
-                            p.move(to: CGPoint(x: size.width * 0.55, y: size.height * 0.25))
-                            p.addLine(to: CGPoint(x: size.width * 0.6,  y: size.height * 0.55))
-                            p.addLine(to: CGPoint(x: size.width * 0.52, y: size.height * 0.75))
-                            ctx.stroke(p, with: .color(WGColor.orange), lineWidth: 1.5)
-                        }
-                        .frame(width: 54, height: 44)
-
-                        Image(systemName: "magnifyingglass")
-                            .font(.system(size: 12, weight: .bold))
-                            .foregroundColor(WGColor.yellow)
-                            .offset(x: 22, y: -16)
                     }
-                }
-                .scaleEffect(logoScale)
-                .opacity(logoOpacity)
-                .shadow(color: WGColor.yellowGlowFill, radius: 30)
-
-                Spacer().frame(height: 24)
-
-                Text("Wall Guard")
-                    .font(.system(size: 34, weight: .bold, design: .rounded))
-                    .foregroundColor(WGColor.textPrimary)
-                    .offset(y: titleOffset)
+                    .scaleEffect(logoScale)
                     .opacity(logoOpacity)
+                    .shadow(color: WGColor.yellowGlowFill, radius: 30)
 
-                Spacer().frame(height: 8)
+                    Spacer().frame(height: 24)
 
-                HStack(spacing: 6) {
-                    Rectangle().fill(WGColor.yellow).frame(width: 20, height: 1)
-                    Text("Smart repair assistant")
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundColor(WGColor.textMuted)
-                    Rectangle().fill(WGColor.yellow).frame(width: 20, height: 1)
+                    Text("Wall Guard")
+                        .font(.system(size: 34, weight: .bold, design: .rounded))
+                        .foregroundColor(WGColor.textPrimary)
+                        .offset(y: titleOffset)
+                        .opacity(logoOpacity)
+
+                    Spacer().frame(height: 8)
+
+                    HStack(spacing: 6) {
+                        Rectangle().fill(WGColor.yellow).frame(width: 20, height: 1)
+                        Text("Loading in app content")
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundColor(WGColor.textMuted)
+                        Rectangle().fill(WGColor.yellow).frame(width: 20, height: 1)
+                    }
+                    .opacity(subtitleOpacity)
+
+                    Spacer()
                 }
-                .opacity(subtitleOpacity)
-
-                Spacer()
+                .padding(.horizontal, 40)
             }
-            .padding(.horizontal, 40)
+            .scaleEffect(exitScale)
+            .opacity(exitOpacity)
+            .onAppear { runAnimation() }
+            .onDisappear { isVisible = false; stopLoops() }
+            .fullScreenCover(isPresented: $marshal.showPermissionPrompt) {
+                ConsentBastion(marshal: marshal)
+            }
+            .fullScreenCover(isPresented: $marshal.showOfflineView) {
+                OfflineBastion()
+            }
         }
-        .scaleEffect(exitScale)
-        .opacity(exitOpacity)
-        .onAppear { runAnimation() }
-        .onDisappear { isVisible = false; stopLoops() }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 
     private func runAnimation() {
+        wireStreams()
+        wireNetworkMonitoring()
+        marshal.ignite()
         isVisible = true
 
         // Phase 1: Background (0–0.6s)
         withAnimation(.easeOut(duration: 0.6)) { bgOpacity = 1; bgScale = 1.0 }
         withAnimation(.easeInOut(duration: 2.5).repeatForever(autoreverses: true).delay(0.3)) {
             gridOpacity = 0.22
+        }
+        
+        func wireNetworkMonitoring() {
+            networkMonitor.pathUpdateHandler = { path in
+                Task { @MainActor in
+                    marshal.networkConnectivityChanged(path.status == .satisfied)
+                }
+            }
+            networkMonitor.start(queue: .global(qos: .background))
         }
 
         // Phase 2: Cracks + scan (0.6–1.4s)
@@ -177,13 +202,21 @@ struct SplashView: View {
             }
             withAnimation(.easeIn(duration: 0.4).delay(0.2)) { subtitleOpacity = 1 }
         }
-
-        // Phase 4: Exit (2.5s)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-            guard isVisible else { return }
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) { exitScale = 1.15 }
-            withAnimation(.easeIn(duration: 0.35).delay(0.1))            { exitOpacity = 0 }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.45) { onFinish() }
+        
+        func wireStreams() {
+            NotificationCenter.default.publisher(for: .attributionParapet)
+                .compactMap { $0.userInfo?["conversionData"] as? [String: Any] }
+                .sink { data in
+                    marshal.ingestAttribution(data)
+                }
+                .store(in: &cancellables)
+            
+            NotificationCenter.default.publisher(for: .deeplinksParapet)
+                .compactMap { $0.userInfo?["deeplinksData"] as? [String: Any] }
+                .sink { data in
+                    marshal.ingestDeeplinks(data)
+                }
+                .store(in: &cancellables)
         }
     }
 
@@ -214,4 +247,92 @@ struct WallGridLayer: View {
             }
         }
     }
+}
+
+struct ConsentBastion: View {
+    let marshal: WallGuardMarshal
+    
+    var body: some View {
+        GeometryReader { geometry in
+            ZStack {
+                Color.black.ignoresSafeArea()
+                
+                Image("wall")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: geometry.size.width, height: geometry.size.height)
+                    .ignoresSafeArea()
+                    .opacity(0.9)
+                
+                VStack(spacing: 12) {
+                    Spacer()
+                    Text("ALLOW NOTIFICATIONS ABOUT BONUSES AND PROMOS")
+                        .font(.system(size: 22, weight: .black, design: .rounded))
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 12)
+                        .multilineTextAlignment(.center)
+                    subtitleText
+                        .multilineTextAlignment(.center)
+                    actionButtons
+                }
+                .padding(.bottom, 24)
+            }
+        }
+        .ignoresSafeArea()
+        .preferredColorScheme(.dark)
+    }
+    
+    private var subtitleText: some View {
+        Text("STAY TUNED WITH BEST OFFERS FROM OUR CASINO")
+            .font(.system(size: 14, weight: .semibold, design: .rounded))
+            .foregroundColor(.white.opacity(0.7))
+            .padding(.horizontal, 12)
+    }
+    
+    private var actionButtons: some View {
+        VStack(spacing: 12) {
+            Button {
+                marshal.acceptConsent()
+            } label: {
+                Image("guard")
+                    .resizable()
+                    .frame(width: 300, height: 55)
+            }
+            
+            Button {
+                marshal.skipConsent()
+            } label: {
+                Text("Skip")
+                    .font(.system(size: 14, weight: .semibold, design: .rounded))
+                    .foregroundColor(.white.opacity(0.7))
+            }
+        }
+        .padding(.horizontal, 12)
+    }
+}
+
+struct OfflineBastion: View {
+    var body: some View {
+        GeometryReader { geometry in
+            ZStack {
+                Color.black.ignoresSafeArea()
+                
+                Image("wall2")
+                    .resizable().scaledToFill()
+                    .frame(width: geometry.size.width, height: geometry.size.height)
+                    .ignoresSafeArea()
+                    .blur(radius: 11)
+                    .opacity(0.3)
+                
+                Image("error")
+                    .resizable()
+                    .frame(width: 220, height: 260)
+            }
+        }
+        .ignoresSafeArea()
+    }
+}
+
+#Preview {
+    SplashView()
 }

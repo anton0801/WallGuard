@@ -2,18 +2,43 @@ import SwiftUI
 
 @main
 struct WallGuardApp: App {
-    @AppStorage("appTheme") private var appTheme = "dark"
-    @StateObject private var appState = AppState()
+    
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegator
 
     var body: some Scene {
         WindowGroup {
-            RootView()
-                .environmentObject(appState)
-                .preferredColorScheme(colorScheme)
-                .onAppear { appState.loadAll() }
+            SplashView()
         }
     }
 
+}
+
+struct RootView: View {
+    
+    @AppStorage("appTheme") private var appTheme = "dark"
+    @StateObject private var appState = AppState()
+    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
+    @State private var phase: AppPhase = .none
+
+    enum AppPhase { case onboarding, main, none }
+
+    var body: some View {
+        ZStack {
+            switch phase {
+            case .onboarding:
+                OnboardingContainerView(onFinish: {
+                    withAnimation(.easeInOut(duration: 0.5)) { phase = .main }
+                })
+            case .main:
+                MainTabView()
+            case .none:
+                EmptyView()
+            }
+        }
+        .preferredColorScheme(colorScheme)
+        .onAppear { appState.loadAll() }
+    }
+    
     private var colorScheme: ColorScheme? {
         switch appTheme {
         case "dark":   return .dark
@@ -21,30 +46,5 @@ struct WallGuardApp: App {
         default:       return nil
         }
     }
-}
-
-struct RootView: View {
-    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
-    @State private var phase: AppPhase = .splash
-
-    enum AppPhase { case splash, onboarding, main }
-
-    var body: some View {
-        ZStack {
-            switch phase {
-            case .splash:
-                SplashView(onFinish: {
-                    withAnimation(.easeInOut(duration: 0.5)) {
-                        phase = hasCompletedOnboarding ? .main : .onboarding
-                    }
-                })
-            case .onboarding:
-                OnboardingContainerView(onFinish: {
-                    withAnimation(.easeInOut(duration: 0.5)) { phase = .main }
-                })
-            case .main:
-                MainTabView()
-            }
-        }
-    }
+    
 }

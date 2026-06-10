@@ -7,15 +7,53 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8F059FAC2FD9A354008C7797 /* NotificationOfWallService.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8F059FA52FD9A354008C7797 /* NotificationOfWallService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		8F059FB42FD9A38C008C7797 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 8F059FB32FD9A38C008C7797 /* FirebaseMessaging */; };
+		8F059FB72FD9A396008C7797 /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 8F059FB62FD9A396008C7797 /* ConfettiSwiftUI */; };
+		8F059FBA2FD9A3A1008C7797 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 8F059FB92FD9A3A1008C7797 /* Lottie */; };
+		8F059FBD2FD9A3B2008C7797 /* AppsFlyerLib in Frameworks */ = {isa = PBXBuildFile; productRef = 8F059FBC2FD9A3B2008C7797 /* AppsFlyerLib */; };
+		8F059FC02FD9A3BE008C7797 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 8F059FBF2FD9A3BE008C7797 /* FirebaseMessaging */; };
 		8FDA15F72FCF441600923558 /* codemagic.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 8FDA15F62FCF441600923558 /* codemagic.yaml */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		8F059FAA2FD9A354008C7797 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8FCFAB912FAF5AD700CEF0D5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8F059FA42FD9A354008C7797;
+			remoteInfo = NotificationOfWallService;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8F059FAD2FD9A354008C7797 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				8F059FAC2FD9A354008C7797 /* NotificationOfWallService.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		8F059FA52FD9A354008C7797 /* NotificationOfWallService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationOfWallService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FCFAB992FAF5AD700CEF0D5 /* WallGuard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WallGuard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FDA15F62FCF441600923558 /* codemagic.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = codemagic.yaml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		8F059FB12FD9A354008C7797 /* Exceptions for "NotificationOfWallService" folder in "NotificationOfWallService" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 8F059FA42FD9A354008C7797 /* NotificationOfWallService */;
+		};
 		8FCFABA92FAF5AF800CEF0D5 /* Exceptions for "WallGuard" folder in "WallGuard" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -26,6 +64,14 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		8F059FA62FD9A354008C7797 /* NotificationOfWallService */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				8F059FB12FD9A354008C7797 /* Exceptions for "NotificationOfWallService" folder in "NotificationOfWallService" target */,
+			);
+			path = NotificationOfWallService;
+			sourceTree = "<group>";
+		};
 		8FCFAB9B2FAF5AD700CEF0D5 /* WallGuard */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -37,21 +83,42 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		8F059FA22FD9A354008C7797 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8F059FC02FD9A3BE008C7797 /* FirebaseMessaging in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8FCFAB962FAF5AD700CEF0D5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8F059FB72FD9A396008C7797 /* ConfettiSwiftUI in Frameworks */,
+				8F059FBD2FD9A3B2008C7797 /* AppsFlyerLib in Frameworks */,
+				8F059FB42FD9A38C008C7797 /* FirebaseMessaging in Frameworks */,
+				8F059FBA2FD9A3A1008C7797 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8F059FBE2FD9A3BE008C7797 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		8FCFAB902FAF5AD700CEF0D5 = {
 			isa = PBXGroup;
 			children = (
 				8FDA15F62FCF441600923558 /* codemagic.yaml */,
 				8FCFAB9B2FAF5AD700CEF0D5 /* WallGuard */,
+				8F059FA62FD9A354008C7797 /* NotificationOfWallService */,
+				8F059FBE2FD9A3BE008C7797 /* Frameworks */,
 				8FCFAB9A2FAF5AD700CEF0D5 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -60,6 +127,7 @@
 			isa = PBXGroup;
 			children = (
 				8FCFAB992FAF5AD700CEF0D5 /* WallGuard.app */,
+				8F059FA52FD9A354008C7797 /* NotificationOfWallService.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -67,6 +135,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		8F059FA42FD9A354008C7797 /* NotificationOfWallService */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8F059FB02FD9A354008C7797 /* Build configuration list for PBXNativeTarget "NotificationOfWallService" */;
+			buildPhases = (
+				8F059FA12FD9A354008C7797 /* Sources */,
+				8F059FA22FD9A354008C7797 /* Frameworks */,
+				8F059FA32FD9A354008C7797 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				8F059FA62FD9A354008C7797 /* NotificationOfWallService */,
+			);
+			name = NotificationOfWallService;
+			packageProductDependencies = (
+				8F059FBF2FD9A3BE008C7797 /* FirebaseMessaging */,
+			);
+			productName = NotificationOfWallService;
+			productReference = 8F059FA52FD9A354008C7797 /* NotificationOfWallService.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		8FCFAB982FAF5AD700CEF0D5 /* WallGuard */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8FCFABA52FAF5AD800CEF0D5 /* Build configuration list for PBXNativeTarget "WallGuard" */;
@@ -74,16 +165,22 @@
 				8FCFAB952FAF5AD700CEF0D5 /* Sources */,
 				8FCFAB962FAF5AD700CEF0D5 /* Frameworks */,
 				8FCFAB972FAF5AD700CEF0D5 /* Resources */,
+				8F059FAD2FD9A354008C7797 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				8F059FAB2FD9A354008C7797 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				8FCFAB9B2FAF5AD700CEF0D5 /* WallGuard */,
 			);
 			name = WallGuard;
 			packageProductDependencies = (
+				8F059FB32FD9A38C008C7797 /* FirebaseMessaging */,
+				8F059FB62FD9A396008C7797 /* ConfettiSwiftUI */,
+				8F059FB92FD9A3A1008C7797 /* Lottie */,
+				8F059FBC2FD9A3B2008C7797 /* AppsFlyerLib */,
 			);
 			productName = WallGuard;
 			productReference = 8FCFAB992FAF5AD700CEF0D5 /* WallGuard.app */;
@@ -99,6 +196,9 @@
 				LastSwiftUpdateCheck = 1640;
 				LastUpgradeCheck = 1640;
 				TargetAttributes = {
+					8F059FA42FD9A354008C7797 = {
+						CreatedOnToolsVersion = 16.4;
+					};
 					8FCFAB982FAF5AD700CEF0D5 = {
 						CreatedOnToolsVersion = 16.4;
 					};
@@ -113,17 +213,31 @@
 			);
 			mainGroup = 8FCFAB902FAF5AD700CEF0D5;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				8F059FB22FD9A38C008C7797 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				8F059FB52FD9A396008C7797 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
+				8F059FB82FD9A3A1008C7797 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				8F059FBB2FD9A3B2008C7797 /* XCRemoteSwiftPackageReference "AppsFlyerFramework" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8FCFAB9A2FAF5AD700CEF0D5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				8FCFAB982FAF5AD700CEF0D5 /* WallGuard */,
+				8F059FA42FD9A354008C7797 /* NotificationOfWallService */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		8F059FA32FD9A354008C7797 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8FCFAB972FAF5AD700CEF0D5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -135,6 +249,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		8F059FA12FD9A354008C7797 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8FCFAB952FAF5AD700CEF0D5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -144,7 +265,76 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		8F059FAB2FD9A354008C7797 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8F059FA42FD9A354008C7797 /* NotificationOfWallService */;
+			targetProxy = 8F059FAA2FD9A354008C7797 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		8F059FAE2FD9A354008C7797 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NotificationOfWallService/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NotificationOfWallService;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.guardingofwall.WallGuard.NotificationOfWallService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8F059FAF2FD9A354008C7797 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NotificationOfWallService/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NotificationOfWallService;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.guardingofwall.WallGuard.NotificationOfWallService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		8FCFABA32FAF5AD800CEF0D5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -273,6 +463,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "Wall Guard";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Wall Guard uses the camera to scan. For example, when you log a new defect, you can take a photo of the damaged area to attach it to the record for future comparison.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Wall Guard needs photo library access for wall photos";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Wall Guard uses tracking data to improve app performance, enhance the user experience, analyze feature usage, and support continuous updates and functionality improvements. This information also helps maintain app reliability, stability, and security.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -287,7 +478,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.3;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.guardingofwall.WallGuard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -315,6 +506,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "Wall Guard";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Wall Guard uses the camera to scan. For example, when you log a new defect, you can take a photo of the damaged area to attach it to the record for future comparison.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Wall Guard needs photo library access for wall photos";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Wall Guard uses tracking data to improve app performance, enhance the user experience, analyze feature usage, and support continuous updates and functionality improvements. This information also helps maintain app reliability, stability, and security.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -329,7 +521,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.3;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.guardingofwall.WallGuard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -346,6 +538,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		8F059FB02FD9A354008C7797 /* Build configuration list for PBXNativeTarget "NotificationOfWallService" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8F059FAE2FD9A354008C7797 /* Debug */,
+				8F059FAF2FD9A354008C7797 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		8FCFAB942FAF5AD700CEF0D5 /* Build configuration list for PBXProject "WallGuard" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -365,6 +566,69 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8F059FB22FD9A38C008C7797 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.14.0;
+			};
+		};
+		8F059FB52FD9A396008C7797 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/simibac/ConfettiSwiftUI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+		8F059FB82FD9A3A1008C7797 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.6.0;
+			};
+		};
+		8F059FBB2FD9A3B2008C7797 /* XCRemoteSwiftPackageReference "AppsFlyerFramework" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AppsFlyerSDK/AppsFlyerFramework";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.18.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8F059FB32FD9A38C008C7797 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8F059FB22FD9A38C008C7797 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+		8F059FB62FD9A396008C7797 /* ConfettiSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8F059FB52FD9A396008C7797 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */;
+			productName = ConfettiSwiftUI;
+		};
+		8F059FB92FD9A3A1008C7797 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8F059FB82FD9A3A1008C7797 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+		8F059FBC2FD9A3B2008C7797 /* AppsFlyerLib */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8F059FBB2FD9A3B2008C7797 /* XCRemoteSwiftPackageReference "AppsFlyerFramework" */;
+			productName = AppsFlyerLib;
+		};
+		8F059FBF2FD9A3BE008C7797 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8F059FB22FD9A38C008C7797 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8FCFAB912FAF5AD700CEF0D5 /* Project object */;
 }
