@@ -26,6 +26,9 @@ struct SplashView: View {
     var body: some View {
         NavigationView {
             ZStack {
+                WGColor.bgDeep
+                       .ignoresSafeArea()
+                
                 // Layer 1: Background gradient
                 LinearGradient(
                     colors: [WGColor.bgDeep, WGColor.bg, WGColor.bgSoft],
@@ -35,16 +38,14 @@ struct SplashView: View {
                 .opacity(bgOpacity)
                 .scaleEffect(bgScale)
                 
-                GeometryReader { geometry in
-                    Image("wall2")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: geometry.size.width, height: geometry.size.height)
-                        .ignoresSafeArea()
-                        .opacity(0.5)
-                        .blur(radius: 2)
-                }
-                .ignoresSafeArea()
+                Image("wall2")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .clipped()
+                    .opacity(0.5)
+                    .blur(radius: 2)
+                    .ignoresSafeArea()
 
                 // Layer 2: Wall grid texture
                 WallGridLayer()
@@ -234,14 +235,14 @@ struct ConsentBastion: View {
             ZStack {
                 Color.black.ignoresSafeArea()
                 
-                Image("wall")
+                Image(geometry.size.width > geometry.size.height ? "wall3" : "wall")
                     .resizable()
                     .scaledToFill()
                     .frame(width: geometry.size.width, height: geometry.size.height)
                     .ignoresSafeArea()
                     .opacity(0.9)
                 
-                VStack(spacing: 12) {
+                VStack(spacing: 18) {
                     Spacer()
                     Text("ALLOW NOTIFICATIONS ABOUT BONUSES AND PROMOS")
                         .font(.system(size: 22, weight: .black, design: .rounded))
@@ -261,13 +262,13 @@ struct ConsentBastion: View {
     
     private var subtitleText: some View {
         Text("STAY TUNED WITH BEST OFFERS FROM OUR CASINO")
-            .font(.system(size: 14, weight: .semibold, design: .rounded))
+            .font(.system(size: 15, weight: .semibold, design: .rounded))
             .foregroundColor(.white.opacity(0.7))
             .padding(.horizontal, 12)
     }
     
     private var actionButtons: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 18) {
             Button {
                 marshal.acceptConsent()
             } label: {
